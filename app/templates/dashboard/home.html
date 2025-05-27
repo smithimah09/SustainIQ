@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}Dashboard - Green Genius{% endblock %}
+{% block title %}Dashboard - SustainIQ{% endblock %}
 
 {% block content %}
 <div class="row">
@@ -139,7 +139,7 @@
         {% else %}
           <p class="text-center">
             No saved tips yet.
-            <a href="{{ url_for('ai.ask_question') }}">Ask Green Genius a question!</a>
+            <a href="{{ url_for('ai.ask_question') }}">Ask SustainIQ a question!</a>
           </p>
         {% endif %}
       </div>
@@ -152,7 +152,7 @@
         <div class="d-grid gap-2">
           <a href="{{ url_for('tracker.log_action') }}" class="btn btn-success">Log Eco-Action</a>
           <a href="{{ url_for('tracker.set_goal') }}"    class="btn btn-info">Set New Goal</a>
-          <a href="{{ url_for('ai.ask_question') }}"    class="btn btn-primary">Ask Green Genius</a>
+          <a href="{{ url_for('ai.ask_question') }}"    class="btn btn-primary">Ask SustainIQ</a>
         </div>
       </div>
     </div>
