@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block title %}Sustainability Goals{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h3 class="card-title mb-0">Your Sustainability Goals</h3>
+            </div>
+            <div class="card-body">
+                {% if goals %}
+                    <ul class="nav nav-tabs mb-3" id="goalTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="active-tab" data-bs-toggle="tab" data-bs-target="#active" type="button" role="tab">Active</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="completed-tab" data-bs-toggle="tab" data-bs-target="#completed" type="button" role="tab">Completed</button>
+                        </li>
+                    </ul>
+                    
+                    <div class="tab-content" id="goalTabsContent">
+                        <div class="tab-pane fade show active" id="active" role="tabpanel">
+                            {% set active_goals = goals|selectattr('status', 'equalto', 'in progress')|list %}
+                            {% if active_goals %}
+                                <div class="list-group">
+                                    {% for goal in active_goals %}
+                                        <div class="list-group-item">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <h5 class="mb-1">{{ goal.title }}</h5>
+                                                <small>Set on {{ goal.created_at.strftime('%b %d, %Y') }}</small>
+                                            </div>
+                                            <p class="mb-1">{{ goal.description }}</p>
+                                            {% if goal.target_date %}
+                                                <div class="d-flex align-items-center mb-2">
+                                                    <small class="text-muted me-2">Target Date:</small>
+                                                    <small>{{ goal.target_date.strftime('%b %d, %Y') }}</small>
+                                                </div>
+                                            {% endif %}
+                                            <div class="d-flex justify-content-end">
+                                                <a href="{{ url_for('tracker.update_goal_status', goal_id=goal._id, status='completed') }}" class="btn btn-sm btn-success me-2">Mark Complete</a>
+                                                <a href="{{ url_for('tracker.update_goal_status', goal_id=goal._id, status='abandoned') }}" class="btn btn-sm btn-outline-secondary">Abandon</a>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <p class="text-center">No active goals.</p>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="tab-pane fade" id="completed" role="tabpanel">
+                            {% set completed_goals = goals|selectattr('status', 'equalto', 'completed')|list %}
+                            {% if completed_goals %}
+                                <div class="list-group">
+                                    {% for goal in completed_goals %}
+                                        <div class="list-group-item">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <h5 class="mb-1">{{ goal.title }}</h5>
+                                                <span class="badge bg-success">Completed</span>
+                                            </div>
+                                            <p class="mb-1">{{ goal.description }}</p>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <p class="text-center">No completed goals yet.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% else %}
+                    <p class="text-center">No goals set yet. <a href="{{ url_for('tracker.set_goal') }}">Set your first sustainability goal!</a></p>
+                {% endif %}
+            </div>
+            <div class="card-footer">
+                <div class="d-flex justify-content-between">
+                    <a href="{{ url_for('dashboard.home') }}" class="btn btn-outline-secondary">Back to Dashboard</a>
+                    <a href="{{ url_for('tracker.set_goal') }}" class="btn btn-success">Set New Goal</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

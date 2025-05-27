@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Green Genius{% endblock %}
+
+{% block content %}
+<div class="row">
+  <div class="col-md-8">
+    <h1 class="mb-4">Welcome, {{ current_user.username }}!</h1>
+
+    <!-- Stats Cards -->
+    <div class="row mb-4">
+      <div class="col-md-4">
+        <div class="card text-center bg-success text-white">
+          <div class="card-body">
+            <h5 class="card-title">Total Actions</h5>
+            <h2 class="card-text">{{ total_actions }}</h2>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card text-center text-white custom">
+          <div class="card-body">
+            <h5 class="card-title">Active Goals</h5>
+            <h2 class="card-text">{{ active_goals|length }}</h2>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="card text-center text-white customtwo">
+          <div class="card-body">
+            <h5 class="card-title">Completed Goals</h5>
+            <h2 class="card-text">{{ completed_goals }}</h2>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="row mb-4">
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header custom">Actions by Category</div>
+          <div class="card-body">
+            <canvas id="categoryChart" height="250"></canvas>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header">Weekly Action Progress</div>
+          <div class="card-body">
+            <canvas id="progressChart" height="250"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Actions -->
+    <div class="card mb-4">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <span>Recent Eco-Actions</span>
+        <a href="{{ url_for('tracker.actions_history') }}" class="btn btn-sm btn-outline-success">View All</a>
+      </div>
+      <div class="card-body">
+        {% if recent_actions %}
+          <div class="list-group">
+            {% for action in recent_actions %}
+              <div class="list-group-item">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <span class="badge bg-{{ action.category }}">{{ action.category|capitalize }}</span>
+                    <span class="ms-2">{{ action.action_text }}</span>
+                  </div>
+                  <small class="text-muted">{{ action.timestamp.strftime('%b %d, %Y') }}</small>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="text-center">
+            No actions logged yet.
+            <a href="{{ url_for('tracker.log_action') }}">Log your first eco-action!</a>
+          </p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <!-- Active Goals -->
+    <div class="card mb-4">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <span>Active Goals</span>
+        <a href="{{ url_for('tracker.goals') }}" class="btn btn-sm btn-outline-success">View All</a>
+      </div>
+      <div class="card-body">
+        {% if active_goals %}
+          <div class="list-group">
+            {% for goal in active_goals %}
+              <div class="list-group-item">
+                <h5 class="mb-1">{{ goal.title }}</h5>
+                <p class="mb-1">{{ goal.description|truncate(100) }}</p>
+                <div class="d-flex justify-content-between">
+                  <small class="text-muted">Set on {{ goal.created_at.strftime('%b %d, %Y') }}</small>
+                  <a href="{{ url_for('tracker.update_goal_status', goal_id=goal._id, status='completed') }}"
+                     class="btn btn-sm btn-success">Complete</a>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="text-center">
+            No active goals.
+            <a href="{{ url_for('tracker.set_goal') }}">Set your first goal!</a>
+          </p>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Saved AI Suggestions -->
+    <div class="card mb-4">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <span>Saved Sustainability Tips</span>
+        <a href="{{ url_for('ai.view_history') }}" class="btn btn-sm btn-outline-success">View All</a>
+      </div>
+      <div class="card-body">
+        {% if saved_suggestions %}
+          <div class="list-group">
+            {% for suggestion in saved_suggestions %}
+              <div class="list-group-item">
+                <a href="{{ url_for('ai.view_suggestion', suggestion_id=suggestion._id) }}"
+                   class="text-decoration-none text-dark">
+                  <h6 class="mb-1">{{ suggestion.question|truncate(50) }}</h6>
+                  <p class="mb-1 small">{{ suggestion.response|truncate(150) }}</p>
+                </a>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p class="text-center">
+            No saved tips yet.
+            <a href="{{ url_for('ai.ask_question') }}">Ask Green Genius a question!</a>
+          </p>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="card">
+      <div class="card-header">Quick Actions</div>
+      <div class="card-body">
+        <div class="d-grid gap-2">
+          <a href="{{ url_for('tracker.log_action') }}" class="btn btn-success">Log Eco-Action</a>
+          <a href="{{ url_for('tracker.set_goal') }}"    class="btn btn-info">Set New Goal</a>
+          <a href="{{ url_for('ai.ask_question') }}"    class="btn btn-primary">Ask Green Genius</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+  <script>
+    // inject our Flask-provided datasets as valid JS strings
+    window.categoryCounts = JSON.parse('{{ category_counts|tojson }}');
+    window.dailyActions   = JSON.parse('{{ daily_actions  |tojson }}');
+  </script>
+  <!-- now load the shared charting logic -->
+  <script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+{% endblock %}

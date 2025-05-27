@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Set Sustainability Goal{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h3 class="card-title mb-0">Set a Sustainability Goal</h3>
+            </div>
+            <div class="card-body">
+                <p class="lead">What sustainable living goal would you like to achieve?</p>
+                <form method="POST" action="{{ url_for('tracker.set_goal') }}">
+                    {{ form.hidden_tag() }}
+                    
+                    <div class="mb-3">
+                        {{ form.title.label(class="form-label") }}
+                        {{ form.title(class="form-control", placeholder="e.g., Reduce plastic waste by 50%") }}
+                        {% if form.title.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.title.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        {{ form.description.label(class="form-label") }}
+                        {{ form.description(class="form-control", rows=3, placeholder="Describe your goal and how you plan to achieve it...") }}
+                        {% if form.description.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.description.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mb-3">
+                        {{ form.target_date.label(class="form-label") }}
+                        {{ form.target_date(class="form-control", type="date") }}
+                        {% if form.target_date.errors %}
+                            <div class="invalid-feedback d-block">
+                                {% for error in form.target_date.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="d-grid">
+                        {{ form.submit(class="btn btn-success") }}
+                    </div>
+                </form>
+            </div>
+            <div class="card-footer">
+                <div class="d-flex justify-content-between">
+                    <a href="{{ url_for('dashboard.home') }}" class="btn btn-outline-secondary">Back to Dashboard</a>
+                    <a href="{{ url_for('tracker.goals') }}" class="btn btn-outline-success">View Goals</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

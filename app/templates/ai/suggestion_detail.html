@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Saved Tip - Green Genius{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-header bg-success text-white">
+        <h4 class="mb-0">Your Saved Tip</h4>
+      </div>
+      <div class="card-body">
+        <h5><strong>Question:</strong></h5>
+        <p class="lead">{{ suggestion.question }}</p>
+
+        <hr>
+
+        <h5><strong>Green Genius says:</strong></h5>
+        <div class="markdown-content">
+          {{ suggestion.response | markdown }}
+        </div>
+      </div>
+      <div class="card-footer d-flex justify-content-between">
+        <a href="{{ url_for('dashboard.home') }}" class="btn btn-outline-secondary">Back to Dashboard</a>
+        <a href="{{ url_for('ai.view_history') }}" class="btn btn-outline-success">View All Tips</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

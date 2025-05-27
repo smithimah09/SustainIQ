@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Log Eco-Action{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-header bg-success text-white">
+        <h4 class="mb-0">Log an Eco-Action</h4>
+      </div>
+      <div class="card-body">
+        <form method="POST" action="{{ url_for('tracker.log_action') }}">
+          {{ form.hidden_tag() }}
+
+          <div class="mb-3">
+            {{ form.action_text.label(class="form-label") }}
+            {{ form.action_text(class="form-control", placeholder="e.g., Biked to work instead of driving") }}
+            {% if form.action_text.errors %}
+              <div class="invalid-feedback d-block">
+                {% for error in form.action_text.errors %}
+                  <span>{{ error }}</span>
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="mb-3">
+            {{ form.category.label(class="form-label") }}
+            {{ form.category(class="form-select") }}
+            {% if form.category.errors %}
+              <div class="invalid-feedback d-block">
+                {% for error in form.category.errors %}
+                  <span>{{ error }}</span>
+                {% endfor %}
+              </div>
+            {% endif %}
+          </div>
+
+          <div class="d-grid">
+            {{ form.submit(class="btn btn-success") }}
+          </div>
+        </form>
+      </div>
+      <div class="card-footer text-end">
+        <a href="{{ url_for('dashboard.home') }}" class="btn btn-outline-secondary">Back to Dashboard</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
