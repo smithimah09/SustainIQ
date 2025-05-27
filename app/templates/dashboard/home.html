@@ -18,7 +18,7 @@
         </div>
       </div>
       <div class="col-md-4">
-        <div class="card text-center text-white custom">
+        <div class="card text-center text-white customtwo">
           <div class="card-body">
             <h5 class="card-title">Active Goals</h5>
             <h2 class="card-text">{{ active_goals|length }}</h2>
@@ -162,10 +162,8 @@
 
 {% block scripts %}
   <script>
-    // inject our Flask-provided datasets as valid JS strings
     window.categoryCounts = JSON.parse('{{ category_counts|tojson }}');
     window.dailyActions   = JSON.parse('{{ daily_actions  |tojson }}');
   </script>
-  <!-- now load the shared charting logic -->
   <script src="{{ url_for('static', filename='js/charts.js') }}"></script>
 {% endblock %}
