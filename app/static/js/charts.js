@@ -1,13 +1,10 @@
 
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Helper to safely get chart contexts
     function getChartContext(id) {
         const canvas = document.getElementById(id);
         return canvas ? canvas.getContext('2d') : null;
     }
-
-    // Parse JSON data from the page
     function parseDataFromPage(variableName, fallback) {
         try {
             if (window[variableName] && typeof window[variableName] === 'object') {
@@ -20,12 +17,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Utility to safely access object properties
     function safeGet(obj, key, defaultValue = 0) {
         return obj && obj[key] !== undefined ? obj[key] : defaultValue;
     }
 
-    // Create category chart
     const categoryCtx = getChartContext('categoryChart');
     if (categoryCtx) {
         const categories = [
@@ -79,7 +74,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Create progress chart
     const progressCtx = getChartContext('progressChart');
     if (progressCtx) {
         const dailyActions = parseDataFromPage('dailyActions', []);
@@ -149,7 +143,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Animate the stat cards
     const statsCards = document.querySelectorAll('.col-md-4 .card');
     if (statsCards.length) {
         statsCards.forEach(card => {
@@ -161,7 +154,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Counter animation helper
     function animateCounter(element, start, end, duration) {
         let startTime = null;
         const step = timestamp => {
