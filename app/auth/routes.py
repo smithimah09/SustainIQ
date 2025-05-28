@@ -11,7 +11,6 @@ from bson.objectid import ObjectId, InvalidId
 
 auth = Blueprint('auth', __name__)
 
-# User class for Flask-Login
 class User:
     def __init__(self, user_data):
         self.id = str(user_data['_id'])
@@ -39,7 +38,6 @@ def load_user(user_id):
     except (InvalidId, TypeError):
         return None
 
-# Forms
 class RegistrationForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired(), Length(min=2, max=20)])
     email = StringField('Email', validators=[DataRequired(), Email()])
@@ -52,7 +50,6 @@ class LoginForm(FlaskForm):
     password = PasswordField('Password', validators=[DataRequired()])
     submit = SubmitField('Login')
 
-# Routes
 @auth.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
