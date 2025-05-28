@@ -39,7 +39,7 @@ def ask_question():
             data = res.json()
             answer = data["choices"][0]["message"]["content"].strip()
 
-            # Save to MongoDB
+            
             result = mongo.db.ai_suggestions.insert_one({
                 "user_id": current_user.get_id(),
                 "question": question,
