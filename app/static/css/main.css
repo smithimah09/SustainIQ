@@ -1,5 +1,4 @@
 
-/* Category badge colors */
 .bg-energy {
     background-color: #28a745 !important;
 }
@@ -69,7 +68,6 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-/* Stats cards */
 .text-center.bg-success, 
 .text-center.bg-info, 
 .text-center.bg-primary {
@@ -85,12 +83,12 @@
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-/* Charts */
+
 canvas {
     margin: 0 auto;
 }
 
-/* AI response styling */
+
 .response-text {
     white-space: pre-line;
     line-height: 1.6;
@@ -100,7 +98,7 @@ canvas {
     border-left: 4px solid #28a745;
 }
 
-/* Form styling */
+
 .form-control:focus {
     border-color: #28a745;
     box-shadow: 0 0 0 0.25rem rgba(40, 167, 69, 0.25);
@@ -115,7 +113,7 @@ canvas {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* Quick actions */
+
 .d-grid .btn {
     font-weight: 500;
     text-transform: uppercase;
@@ -146,13 +144,11 @@ canvas {
 }
 
 
-/* Badges */
 .badge {
     font-weight: 500;
     padding: 0.4em 0.6em;
 }
 
-/* Responsive adjustments */
 @media (max-width: 768px) {
     .card-title {
         font-size: 1rem;
@@ -167,7 +163,6 @@ canvas {
     }
 }
 
-/* Footer styling */
 footer {
     margin-top: 2rem;
     padding: 1.5rem 0;
