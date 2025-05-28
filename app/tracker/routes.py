@@ -32,7 +32,6 @@ def set_goal():
     form = GoalForm()
 
     if form.validate_on_submit():
-        # Convert date to datetime.datetime
         target_date = form.target_date.data
         if target_date:
             target_date = datetime.combine(target_date, time.min)
@@ -43,7 +42,7 @@ def set_goal():
             'description': form.description.data,
             'status': 'in progress',
             'created_at': datetime.utcnow(),
-            'target_date': target_date  # safe for MongoDB now
+            'target_date': target_date 
         }
 
         mongo.db.sustainability_goals.insert_one(goal_data)
